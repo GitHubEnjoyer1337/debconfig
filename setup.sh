@@ -17,7 +17,7 @@ apt upgrade -y
 cd $builddir
 mkdir -p /home/$username/.config
 mkdir -p /home/$username/screenshots
-cp -fr /home/$username/dotconfig-debian/.config /home/$username/
+cp -fr /home/$username/debconfig/.config /home/$username/
 cp .bashrc /home/$username/.bashrc
 cp .vimrc /home/$username/.vimrc
 cp .tmux.conf /home/$username/.tmux.conf
