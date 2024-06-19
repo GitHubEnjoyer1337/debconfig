@@ -17,10 +17,12 @@ apt upgrade -y
 cd $builddir
 mkdir -p /home/$username/.config
 mkdir -p /home/$username/screenshots
+mkdir -p /home/user01/github/ssh/githubenjoyer1337
 cp -fr /home/$username/debconfig/.config /home/$username/
 cp .bashrc /home/$username/.bashrc
 cp .vimrc /home/$username/.vimrc
 cp .tmux.conf /home/$username/.tmux.conf
+cp -r nvim /home/$username/.config
 chown -R $username:$username /home/$username
 
 
