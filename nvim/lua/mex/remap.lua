@@ -27,6 +27,9 @@ vim.keymap.set("n", "N", "Nzzzv")
 -- Paste over selected text without yanking it in visual mode
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
+-- Paste over selected text from clipboard
+vim.keymap.set("x", "<leader>P", '"+p')
+
 -- Yank to system clipboard in normal and visual modes
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 
@@ -102,3 +105,4 @@ vim.keymap.set("n", "<leader>P", [["+p"]])
 --    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
 --    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
 --    ['<C-Space>'] = cmp.mapping.complete(),
+--
