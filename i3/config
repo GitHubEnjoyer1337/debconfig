@@ -200,7 +200,7 @@ bar {
 }
 
 # Screenshot of a selected area using maim and slop and copy to clipboard as well as save
-bindsym $mod+Shift+p exec --no-startup-id bash -c 'maim -s | tee ~/screenshots/$(date +%Y-%m-%d-%T)-screenshot.png | xclip -selection clipboard -t image/png'
+bindsym $mod+Shift+s exec --no-startup-id bash -c 'maim -s | tee ~/screenshots/$(date +%Y-%m-%d-%T)-screenshot.png | xclip -selection clipboard -t image/png'
 
 
 # View the most recent screenshot with feh
