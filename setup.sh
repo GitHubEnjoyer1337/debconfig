@@ -32,7 +32,7 @@ ln -sf /home/$username/.vimrc /root/.vimrc
 ln -sf /home/$username/.config /root/.config
 
 # Installing Essential Programs 
-apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 lightdm i3 golang -y
+apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 lightdm i3 golang nodejs npm exiftool -y
 
 # Installing the most recent Neovim version
 wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -O /usr/local/bin/nvim
@@ -60,3 +60,6 @@ ln -sf /usr/local/bin/nvim /usr/bin/vim
 # 
 # for audio:
 # alsa-utils pulseaudio pavucontrol
+#
+# for removing metadata:
+# exiftool
