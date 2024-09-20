@@ -18,12 +18,14 @@ cd $builddir
 mkdir -p /home/$username/.config
 mkdir -p /home/$username/screenshots
 mkdir -p /home/user01/github/ssh/githubenjoyer1337
+mkdir -p /opt/appimages
 cp -fr /home/$username/debconfig/.config /home/$username/
 cp .bashrc /home/$username/.bashrc
 cp .vimrc /home/$username/.vimrc
 cp .tmux.conf /home/$username/.tmux.conf
 cp -r nvim /home/$username/.config
 cp -r i3 /home/$username/.config
+cp keepassxc /opt/appimages/keepassxc
 chown -R $username:$username /home/$username
 
 # Creating symbolic links for root user
@@ -60,3 +62,6 @@ ln -sf /usr/local/bin/nvim /usr/bin/vim
 # 
 # for audio:
 # alsa-utils pulseaudio pavucontrol
+#
+# for quick image viewing:
+# feh
