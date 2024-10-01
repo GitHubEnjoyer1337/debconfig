@@ -11,6 +11,7 @@ alias calc="libreoffice --calc"
 alias impress="libreoffice --impress"
 alias draw="libreoffice --draw"
 alias base="libreoffice --base"
+alias pass="nohup keepassxc & disown"
 
 
 # set history size

@@ -26,7 +26,7 @@ return require('packer').startup(function(use)
     use { 'morhetz/gruvbox' }
     use { 'mbbill/undotree' }
     use { 'tpope/vim-fugitive' }
-
+    use { 'stevearc/oil.nvim' }
 
     -- LSP and autocompletion related plugins
     use {

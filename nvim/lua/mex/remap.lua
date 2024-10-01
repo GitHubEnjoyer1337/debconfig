@@ -1,7 +1,10 @@
 vim.g.mapleader = " "
 
--- open go to ex
-vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
+--now used to open oil formerly used for ex (netrw)
+-- vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
+
+--open oil
+vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>")
 
 -- Move selected line/block of text down in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")

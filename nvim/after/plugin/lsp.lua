@@ -42,7 +42,7 @@ local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = {'tsserver', 'rust_analyzer', 'pyright', 'gopls', 'html', 'lua_ls' },
+  ensure_installed = {'vtsls', 'rust_analyzer', 'pyright', 'gopls', 'html', 'lua_ls' },
   handlers = {
     function(server_name)
       require('lspconfig')[server_name].setup({
@@ -80,6 +80,9 @@ local cmp_select = {behavior = cmp.SelectBehavior.Select}
 require('luasnip.loaders.from_vscode').lazy_load()
 
 cmp.setup({
+  window = {
+    documentation = cmp.config.disable,
+  },
   sources = {
     {name = 'path'},
     {name = 'nvim_lsp'},

@@ -6,12 +6,19 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Set scrolloff
-vim.opt.scrolloff = 15
+vim.opt.scrolloff = 10
 
 -- Use spaces instead of tabs
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+
+-- Enable smart indentation
+vim.opt.smartindent = true
+
+-- Enable autoindentation
+vim.opt.autoindent = true
 
 -- highlighted search
 vim.opt.hlsearch = false

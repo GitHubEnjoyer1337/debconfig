@@ -34,7 +34,7 @@ ln -sf /home/$username/.vimrc /root/.vimrc
 ln -sf /home/$username/.config /root/.config
 
 # Installing Essential Programs 
-apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 lightdm i3 golang -y
+apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 lightdm i3 golang nodejs npm exiftool lshw rsync -y
 
 # Installing the most recent Neovim version
 wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -O /usr/local/bin/nvim
@@ -48,6 +48,10 @@ chown -R $username:$username /home/$username/.local/share/nvim/site/pack/packer/
 
 # Create a symbolic link to use Neovim when typing 'vim'
 ln -sf /usr/local/bin/nvim /usr/bin/vim
+
+# install rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 
 # for pdf viewing
 # zathura
@@ -65,3 +69,9 @@ ln -sf /usr/local/bin/nvim /usr/bin/vim
 #
 # for quick image viewing:
 # feh
+#
+# for removing metadata:
+# exiftool
+#
+# for reading hardware:
+# lshw ( use sudo lshw -short )
