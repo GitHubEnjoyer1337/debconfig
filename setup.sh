@@ -50,7 +50,7 @@ chown -R $username:$username /home/$username/.local/share/nvim/site/pack/packer/
 ln -sf /usr/local/bin/nvim /usr/bin/vim
 
 # install rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+su - $username -c 'curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y'
 
 
 # for pdf viewing
