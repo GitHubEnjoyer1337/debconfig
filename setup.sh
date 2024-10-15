@@ -28,23 +28,29 @@ cp -r i3 /home/$username/.config
 cp keepassxc /opt/appimages/keepassxc
 chown -R $username:$username /home/$username
 
-# Creating symbolic links for root user
-ln -sf /home/$username/.bashrc /root/.bashrc
-ln -sf /home/$username/.vimrc /root/.vimrc
-ln -sf /home/$username/.config /root/.config
+# Block for Root User
+mkdir -p /root/.config
+
+cp .bashrc /root/.bashrc
+cp .vimrc /root/.vimrc
+cp .tmux.conf /root/.tmux.conf
+cp -r nvim /root/.config
+cp -r i3 /root/.config
+
+chown -R root:root /root
 
 # Installing Essential Programs 
-apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 lightdm i3 golang nodejs npm exiftool lshw rsync -y
+apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 lightdm i3 golang nodejs npm exiftool lshw rsync libreoffice -y
 
 # Installing the most recent Neovim version
 wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -O /usr/local/bin/nvim
 chmod +x /usr/local/bin/nvim
 
-# Install Packer.nvim for Neovim
+# Install Packer.nvim for Neovim ( User installation )
 sudo -u $username git clone --depth 1 https://github.com/wbthomason/packer.nvim /home/$username/.local/share/nvim/site/pack/packer/start/packer.nvim
 
-# Correct permissions for the Packer directory
-chown -R $username:$username /home/$username/.local/share/nvim/site/pack/packer/start/packer.nvim
+# Install Packer.nvim for root user
+git clone --depth 1 https://github.com/wbthomason/packer.nvim /root/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 # Create a symbolic link to use Neovim when typing 'vim'
 ln -sf /usr/local/bin/nvim /usr/bin/vim
