@@ -40,7 +40,7 @@ cp -r i3 /root/.config
 chown -R root:root /root
 
 # Installing Essential Programs 
-apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 lightdm i3 golang nodejs npm exiftool lshw rsync libreoffice -y
+apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 lightdm i3 golang nodejs npm exiftool lshw rsync libreoffice redshift -y
 
 # Installing the most recent Neovim version
 wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -O /usr/local/bin/nvim
@@ -81,3 +81,8 @@ su - $username -c 'curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | s
 #
 # for reading hardware:
 # lshw ( use sudo lshw -short )
+#
+# for night-mode:
+# redshift {commands:   redshift -O 3500    (night-mode)
+#                       redshift -x         (back to default)
+#          }
