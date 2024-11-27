@@ -8,6 +8,7 @@ fi
 
 username=$(id -u -n 1000)
 builddir=$(pwd)
+home_dir="/home/$user01"
 
 # Update packages list and update system
 apt update
@@ -40,11 +41,14 @@ cp -r i3 /root/.config
 chown -R root:root /root
 
 # Installing Essential Programs 
-apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 lightdm i3 golang nodejs npm exiftool lshw rsync libreoffice redshift pgk-config libssl-dev -y
+apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 sddm i3 golang nodejs npm exiftool lshw rsync libreoffice redshift pgk-config libssl-dev -y
 
 # Installing the most recent Neovim version
 wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -O /usr/local/bin/nvim
 chmod +x /usr/local/bin/nvim
+
+# Ensure $PATH includes the directories for binaries
+export PATH=$PATH:/usr/local/bin:$home_dir/.local/bin:$home_dir/bin
 
 # Install Packer.nvim for Neovim ( User installation )
 sudo -u $username git clone --depth 1 https://github.com/wbthomason/packer.nvim /home/$username/.local/share/nvim/site/pack/packer/start/packer.nvim
@@ -57,6 +61,20 @@ ln -sf /usr/local/bin/nvim /usr/bin/vim
 
 # install rust
 su - $username -c 'curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y'
+
+# Add additional paths to ensure mason can find npm and go binaries
+echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' | sudo -u $username tee -a $home_dir/.bashrc
+echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' | sudo tee -a /root/.bashrc
+
+# Ensure permissions for user home directory
+chown -R $username:$username $home_dir
+
+# Source the updated .bashrc for changes to take effect
+sudo -u $username bash -c 'source $HOME/.bashrc'
+source /root/.bashrc
+
+
+
 
 
 # for pdf viewing
