@@ -106,5 +106,6 @@ source /root/.bashrc
 #          }
 #
 #
-# for immutable files (making resolv.conf immutable):
-# chattr -i <filepath>
+# for immutable files (for instance: making resolv.conf immutable):
+# chattr +i <filepath> ( make immutable )
+# chattr -i <filepath> ( remove immutability )
