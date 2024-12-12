@@ -32,3 +32,4 @@ eval "$(ssh-agent -s)"
 
 # Add your SSH private key to the ssh-agent
 ssh-add ~/github/ssh/githubenjoyer1337/github_masterkey
+export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin

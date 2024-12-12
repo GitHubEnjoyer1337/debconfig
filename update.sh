@@ -7,4 +7,4 @@ cp /home/$username/.bashrc /home/$username/debconfig/.bashrc
 cp /home/$username/.config/i3/config /home/$username/debconfig/i3/config
 
 # For nvim, use rsync to exclude .git directory
-rsync -av --exclude='.git' /home/$username/.config/nvim/ /home/$username/debconfig/
+rsync -av --exclude='.git' /home/$username/.config/nvim/ /home/$username/debconfig/nvim/
