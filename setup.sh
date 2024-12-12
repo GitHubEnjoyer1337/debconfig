@@ -19,21 +19,20 @@ cd $builddir
 mkdir -p /home/$username/.config
 mkdir -p /home/$username/screenshots
 mkdir -p /home/user01/github/ssh/githubenjoyer1337
+mkdir -p /home/$username/.config/alacritty
 mkdir -p /opt/appimages
-cp -fr /home/$username/debconfig/.config /home/$username/
-cp .bashrc /home/$username/.bashrc
-cp .vimrc /home/$username/.vimrc
+cp .zshrc /home/$username/.zshrc
 cp .tmux.conf /home/$username/.tmux.conf
 cp -r nvim /home/$username/.config
 cp -r i3 /home/$username/.config
+cp -r alacritty.yml /home/$username/.config/alacritty/alacritty.yml
 cp keepassxc /opt/appimages/keepassxc
 chown -R $username:$username /home/$username
 
 # Block for Root User
 mkdir -p /root/.config
 
-cp .bashrc /root/.bashrc
-cp .vimrc /root/.vimrc
+cp .zshrc /root/.zshrc
 cp .tmux.conf /root/.tmux.conf
 cp -r nvim /root/.config
 cp -r i3 /root/.config
@@ -41,7 +40,21 @@ cp -r i3 /root/.config
 chown -R root:root /root
 
 # Installing Essential Programs 
-apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 sddm i3 golang nodejs npm exiftool lshw rsync libreoffice redshift chattr pgk-config libssl-dev -y
+apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 sddm i3 golang nodejs npm exiftool lshw rsync libreoffice redshift chattr alacritty zsh pgk-config libssl-dev -y
+
+# Install Oh My Zsh for user
+su - $username -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
+
+# Install Oh My Zsh for root
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# Install Zsh plugins
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+# Set Zsh as default shell for user and root
+chsh -s $(which zsh) $username
+chsh -s $(which zsh) root
 
 # Installing the most recent Neovim version
 wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -O /usr/local/bin/nvim
@@ -63,15 +76,15 @@ ln -sf /usr/local/bin/nvim /usr/bin/vim
 su - $username -c 'curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y'
 
 # Add additional paths to ensure mason can find npm and go binaries
-echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' | sudo -u $username tee -a $home_dir/.bashrc
-echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' | sudo tee -a /root/.bashrc
+echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' | sudo -u $username tee -a $home_dir/.zshrc
+echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' | sudo tee -a /root/.zshrc
 
 # Ensure permissions for user home directory
 chown -R $username:$username $home_dir
 
-# Source the updated .bashrc for changes to take effect
-sudo -u $username bash -c 'source $HOME/.bashrc'
-source /root/.bashrc
+# Source the updated .zshrc for changes to take effect
+sudo -u $username zsh -c 'source $HOME/.zshrc'
+source /root/.zshrc
 
 
 

@@ -1,0 +1,50 @@
+window:
+  padding:
+    x: 5
+    y: 5
+  opacity: 1.0
+
+font:
+  normal:
+    family: monospace
+    style: Regular
+  size: 11.0
+
+colors:
+  primary:
+    background: '#000000'
+    foreground: '#dddddd'
+
+  # Normal colors (dimmer)
+  normal:
+    black:   '#000000'
+    red:     '#cc0403'
+    green:   '#19cb00'
+    yellow:  '#cecb00'
+    blue:    '#0d73cc'
+    magenta: '#cb1ed1'
+    cyan:    '#0dcdcd'
+    white:   '#dddddd'
+
+  # Bright colors (slightly brighter but still muted)
+  bright:
+    black:   '#767676'
+    red:     '#d54e53'
+    green:   '#23d18b'
+    yellow:  '#d7ba7d'
+    blue:    '#4474d4'
+    magenta: '#d670d6'
+    cyan:    '#29b8db'
+    white:   '#eeeeee'
+
+scrolling:
+  history: 10000
+
+mouse:
+  hide_when_typing: false
+
+# Remove all key bindings
+key_bindings: []
+
+env:
+  TERM: xterm-256color
