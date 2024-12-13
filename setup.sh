@@ -119,6 +119,6 @@ source /root/.zshrc
 #          }
 #
 #
-# for immutable files (for instance: making resolv.conf immutable):
+# for immutable files (for instance: making resolv.conf immutable (chattr is part of the e2fsprogs package)):
 # chattr +i <filepath> ( make immutable )
 # chattr -i <filepath> ( remove immutability )
