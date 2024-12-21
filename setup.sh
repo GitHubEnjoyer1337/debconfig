@@ -40,7 +40,7 @@ cp -r i3 /root/.config
 chown -R root:root /root
 
 # Installing Essential Programs 
-apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 sddm i3 golang nodejs npm exiftool lshw rsync libreoffice redshift e2fsprogs alacritty zsh pkg-config libssl-dev -y
+apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 sddm i3 golang nodejs npm exiftool lshw rsync libreoffice redshift e2fsprogs alacritty zsh pkg-config acl libssl-dev -y
 
 # Install Oh My Zsh for user
 su - $username -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
@@ -122,3 +122,9 @@ source /root/.zshrc
 # for immutable files (for instance: making resolv.conf immutable (chattr is part of the e2fsprogs package)):
 # chattr +i <filepath> ( make immutable )
 # chattr -i <filepath> ( remove immutability )
+#
+#
+#
+# for advanced permissions(acl):
+# getfacl: view acls
+# setfacl: set acls
