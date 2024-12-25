@@ -1,93 +1,195 @@
 #!/bin/bash
 
+set -e  # Exit on error
+
 # Check if Script is Run as Root
 if [[ $EUID -ne 0 ]]; then
-  echo "You must be a root user to run this script" 2>&1
+  echo "You must be a root user to run this script" >&2
   exit 1
 fi
 
-username=$(id -u -n 1000)
-builddir=$(pwd)
-home_dir="/home/$user01"
+# Function to determine the username of the main non-root user
+get_username() {
+    username=$(awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1; exit }' /etc/passwd)
 
-# Update packages list and update system
+    if [ -z "$username" ]; then
+        read -p "Enter the username of the regular user: " username
+    fi
+
+    # Check if user exists
+    if ! id "$username" >/dev/null 2>&1; then
+        echo "User $username does not exist."
+        exit 1
+    fi
+}
+
+get_username
+home_dir="/home/$username"
+
+# Check for required_files
+required_files=(".zshrc" ".tmux.conf" "nvim" "i3" "alacritty.yml" "keepassxc")
+for file in "${required_files[@]}"; do
+    if [ ! -e "$file" ]; then
+        echo "Error: Required file $file not found"
+        exit 1
+    fi
+done
+
+# Check for internet connection
+if ! ping -c 1 google.com >/dev/null 2>&1; then
+    echo "Error: No internet connection"
+    exit 1
+fi
+
+create_dir() {
+    if [ ! -d "$1" ]; then
+        if ! mkdir -p "$1"; then
+            echo "Error: Failed to create directory $1"
+            exit 1
+        fi
+    fi
+}
+
+# Update packages list and upgrade system
 apt update
 apt upgrade -y
 
-# Making .config and Moving config files
-cd $builddir
-mkdir -p /home/$username/.config
-mkdir -p /home/$username/screenshots
-mkdir -p /home/user01/github/ssh/githubenjoyer1337
-mkdir -p /home/$username/.config/alacritty
-mkdir -p /opt/appimages
-cp .zshrc /home/$username/.zshrc
-cp .tmux.conf /home/$username/.tmux.conf
-cp -r nvim /home/$username/.config
-cp -r i3 /home/$username/.config
-cp -r alacritty.yml /home/$username/.config/alacritty/alacritty.yml
-cp keepassxc /opt/appimages/keepassxc
-chown -R $username:$username /home/$username
+# Create directories
+create_dir "$home_dir/.config"
+create_dir "$home_dir/screenshots"
+create_dir "$home_dir/github/ssh/githubenjoyer1337"
+create_dir "$home_dir/.config/alacritty"
+create_dir "/opt/appimages"
+create_dir "$home_dir/.local/share/nvim/site/pack/packer/start"
 
-# Block for Root User
-mkdir -p /root/.config
+# For Root User
+create_dir "/root/.config"
+create_dir "/root/.local/share/nvim/site/pack/packer/start"
 
-cp .zshrc /root/.zshrc
-cp .tmux.conf /root/.tmux.conf
-cp -r nvim /root/.config
-cp -r i3 /root/.config
+# Install Essential Programs (excluding nodejs and npm)
+apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g \
+alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep \
+zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
+zsh pkg-config acl git libssl-dev -y
 
-chown -R root:root /root
+# Install Node.js (LTS version) from NodeSource
+curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+apt install -y nodejs
 
-# Installing Essential Programs 
-apt install sudo xorg kitty wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep zathura vim vim-gtk3 sddm i3 golang nodejs npm exiftool lshw rsync libreoffice redshift e2fsprogs alacritty zsh pkg-config acl libssl-dev -y
+# Install Oh My Zsh for root if not already installed
+if [ ! -d "/root/.oh-my-zsh" ]; then
+    echo "Installing Oh My Zsh for root..."
+    env HOME=/root sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+else
+    echo "Oh My Zsh already installed for root."
+fi
 
-# Install Oh My Zsh for user
-su - $username -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
+# Install plugins for root
+if [ ! -d "/root/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /root/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+fi
+if [ ! -d "/root/.oh-my-zsh/custom/plugins/zsh-autosuggestions" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions /root/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+fi
 
-# Install Oh My Zsh for root
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+# Install Oh My Zsh for user if not already installed
+if [ ! -d "$home_dir/.oh-my-zsh" ]; then
+    echo "Installing Oh My Zsh for user..."
+    su - "$username" -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
+else
+    echo "Oh My Zsh already installed for user."
+fi
 
-# Install Zsh plugins
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# Install plugins for user
+if [ ! -d "$home_dir/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]; then
+    su - "$username" -c "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+fi
+if [ ! -d "$home_dir/.oh-my-zsh/custom/plugins/zsh-autosuggestions" ]; then
+    su - "$username" -c "git clone https://github.com/zsh-users/zsh-autosuggestions \${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+fi
 
 # Set Zsh as default shell for user and root
-chsh -s $(which zsh) $username
-chsh -s $(which zsh) root
+chsh -s "$(which zsh)" "$username"
+chsh -s "$(which zsh)" root
 
 # Installing the most recent Neovim version
-wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -O /usr/local/bin/nvim
-chmod +x /usr/local/bin/nvim
+if [ ! -f /usr/local/bin/nvim ]; then
+    wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -O /usr/local/bin/nvim
+    chmod +x /usr/local/bin/nvim
+else
+    echo "Neovim already installed."
+fi
 
-# Ensure $PATH includes the directories for binaries
-export PATH=$PATH:/usr/local/bin:$home_dir/.local/bin:$home_dir/bin
-
-# Install Packer.nvim for Neovim ( User installation )
-sudo -u $username git clone --depth 1 https://github.com/wbthomason/packer.nvim /home/$username/.local/share/nvim/site/pack/packer/start/packer.nvim
+# Install Packer.nvim for Neovim (User installation)
+packer_dir="$home_dir/.local/share/nvim/site/pack/packer/start/packer.nvim"
+if [ -d "$packer_dir/.git" ]; then
+    echo "Updating Packer.nvim for user..."
+    su - "$username" -c "git -C \"$packer_dir\" pull"
+else
+    echo "Installing Packer.nvim for user..."
+    su - "$username" -c "git clone --depth 1 https://github.com/wbthomason/packer.nvim '$packer_dir'"
+fi
 
 # Install Packer.nvim for root user
-git clone --depth 1 https://github.com/wbthomason/packer.nvim /root/.local/share/nvim/site/pack/packer/start/packer.nvim
+packer_dir_root="/root/.local/share/nvim/site/pack/packer/start/packer.nvim"
+if [ -d "$packer_dir_root/.git" ]; then
+    echo "Updating Packer.nvim for root..."
+    git -C "$packer_dir_root" pull
+else
+    echo "Installing Packer.nvim for root..."
+    git clone --depth 1 https://github.com/wbthomason/packer.nvim "$packer_dir_root"
+fi
 
-# Create a symbolic link to use Neovim when typing 'vim'
-ln -sf /usr/local/bin/nvim /usr/bin/vim
-
-# install rust
-su - $username -c 'curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y'
+# Install Rust (for user)
+if ! su - "$username" -c 'rustc --version' >/dev/null 2>&1; then
+    su - "$username" -c 'curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y'
+else
+    echo "Rust already installed for user."
+fi
 
 # Add additional paths to ensure mason can find npm and go binaries
-echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' | sudo -u $username tee -a $home_dir/.zshrc
-echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' | sudo tee -a /root/.zshrc
+if ! grep -q 'export PATH=\$PATH:/usr/local/bin:\$HOME/.local/bin:\$HOME/bin' "$home_dir/.zshrc" 2>/dev/null; then
+    echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' >> "$home_dir/.zshrc"
+fi
+if ! grep -q 'export PATH=\$PATH:/usr/local/bin:\$HOME/.local/bin:\$HOME/bin' /root/.zshrc 2>/dev/null; then
+    echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' >> /root/.zshrc
+fi
 
-# Ensure permissions for user home directory
-chown -R $username:$username $home_dir
+# Copy config files for user
+cp .zshrc "$home_dir/.zshrc"
+cp .tmux.conf "$home_dir/.tmux.conf"
+cp -r nvim "$home_dir/.config/nvim"
+cp -r i3 "$home_dir/.config/i3"
+cp alacritty.yml "$home_dir/.config/alacritty/alacritty.yml"
+cp keepassxc /opt/appimages/keepassxc
 
-# Source the updated .zshrc for changes to take effect
-sudo -u $username zsh -c 'source $HOME/.zshrc'
-source /root/.zshrc
+# Set correct ownership for the copied files
+chown "$username:$username" "$home_dir/.zshrc" "$home_dir/.tmux.conf"
+chown -R "$username:$username" "$home_dir/.config/nvim" "$home_dir/.config/i3" "$home_dir/.config/alacritty"
+chown -R "$username:$username" "$home_dir/.local/share/nvim"
+
+# Copy config files for root
+cp .zshrc /root/.zshrc
+cp .tmux.conf /root/.tmux.conf
+cp -r nvim /root/.config/nvim
+cp -r i3 /root/.config/i3
+
+# Ensure root owns its home directory files
+#chown root:root /root/.zshrc /root/.tmux.conf
+#chown -R root:root /root/.config/nvim /root/.config/i3
+#chown -R root:root /root/.local/share/nvim
+chown -R root:root /root/
 
 
+# Optionally create an alias for vim to nvim
+if ! grep -q "alias vim='nvim'" "$home_dir/.zshrc" 2>/dev/null; then
+    echo "alias vim='nvim'" >> "$home_dir/.zshrc"
+fi
+if ! grep -q "alias vim='nvim'" /root/.zshrc 2>/dev/null; then
+    echo "alias vim='nvim'" >> /root/.zshrc
+fi
 
+echo "Setup complete!"
 
 
 # for pdf viewing

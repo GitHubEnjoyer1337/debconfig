@@ -7,6 +7,10 @@ plugins=(git colored-man-pages command-not-found)
 
 source $ZSH/oh-my-zsh.sh
 
+# custom prompt
+PROMPT='%F{blue}%n%f %F{green}${PWD##*/}%f $(git_prompt_info)'
+
+
 # Aliases
 alias l="ls -lah --color=auto"
 alias brave="nohup brave-browser & disown"
@@ -19,8 +23,11 @@ alias draw="libreoffice --draw"
 alias base="libreoffice --base"
 alias pass="nohup keepassxc & disown"
 
-# Environment variables
-export PATH="$HOME/.cargo/bin:$PATH"
+
+# Source cargo (Rust environment)
+if [ -f "$HOME/.cargo/env" ]; then
+    source "$HOME/.cargo/env"
+fi
 export PATH="$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin"
 
 # History configuration
@@ -28,17 +35,8 @@ HISTSIZE=20000
 SAVEHIST=20000
 HISTFILE=~/.zsh_history
 
-# Source cargo
-source "$HOME/.cargo/env"
-
-# Function to get git branch (though Oh My Zsh git plugin provides this already)
-function parse_git_branch() {
-  git branch 2>/dev/null | grep '*' | sed 's/* //'
-}
-
-# Custom prompt (though you might prefer using Oh My Zsh themes)
-PROMPT='%F{blue}%n@%m %F{green}%1~%F{yellow}$(parse_git_branch | sed "s/.*/ git:(&)/")%f $ '
-
 # SSH agent configuration
 eval "$(ssh-agent -s)"
-ssh-add ~/github/ssh/githubenjoyer1337/github_masterkey
+if [ -f "$HOME/github/ssh/githubenjoyer1337/github_masterkey" ]; then
+    ssh-add "$HOME/github/ssh/githubenjoyer1337/github_masterkey"
+fi
