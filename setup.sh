@@ -70,7 +70,7 @@ create_dir "/root/.local/share/nvim/site/pack/packer/start"
 apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g \
 alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep \
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
-zsh pkg-config acl git openssh-server libssl-dev -y
+zsh pkg-config acl git libssl-dev -y
 
 # Install Node.js (LTS version) from NodeSource
 curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
