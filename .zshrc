@@ -28,7 +28,7 @@ alias pass="nohup keepassxc & disown"
 if [ -f "$HOME/.cargo/env" ]; then
     source "$HOME/.cargo/env"
 fi
-export PATH="$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin"
+export PATH="$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin:/usr/sbin"
 
 # History configuration
 HISTSIZE=20000
