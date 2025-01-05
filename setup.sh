@@ -76,6 +76,11 @@ zsh pkg-config acl git dnsutils mpg123 libssl-dev -y
 curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 apt install -y nodejs
 
+# Install global npm packages
+npm install -g npm@latest  # Update npm to latest version
+npm install -g vite        # Install Vite globally
+
+
 # Install Oh My Zsh for root if not already installed
 if [ ! -d "/root/.oh-my-zsh" ]; then
     echo "Installing Oh My Zsh for root..."
