@@ -81,6 +81,11 @@ npm install -g npm@latest  # Update npm to latest version
 npm install -g vite        # Install Vite globally
 
 
+npm install -g pnpm       # Alternative package manager
+npm install -g create-vite # For creating Vite projects easily
+
+
+
 # Install Oh My Zsh for root if not already installed
 if [ ! -d "/root/.oh-my-zsh" ]; then
     echo "Installing Oh My Zsh for root..."
