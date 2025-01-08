@@ -72,19 +72,6 @@ alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip 
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
 zsh pkg-config acl git dnsutils mpg123 libssl-dev -y
 
-# Install Node.js (LTS version) from NodeSource
-curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-apt install -y nodejs
-
-# Install global npm packages
-npm install -g npm@latest  # Update npm to latest version
-npm install -g vite        # Install Vite globally
-
-
-npm install -g pnpm       # Alternative package manager
-npm install -g create-vite # For creating Vite projects easily
-
-
 
 # Install Oh My Zsh for root if not already installed
 if [ ! -d "/root/.oh-my-zsh" ]; then
@@ -164,6 +151,59 @@ fi
 if ! grep -q 'export PATH=\$PATH:/usr/local/bin:\$HOME/.local/bin:\$HOME/bin' /root/.zshrc 2>/dev/null; then
     echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' >> /root/.zshrc
 fi
+
+
+
+# Install nvm and Node.js via nvm for root
+if [ ! -d "/root/.nvm" ]; then
+    echo "Installing nvm for root..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash   
+    # Add nvm to .zshrc
+    echo 'export NVM_DIR="/root/.nvm"' >> /root/.zshrc                               
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.zshrc          
+    export NVM_DIR="/root/.nvm"                                                      
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                                 
+    nvm install --lts                                                                
+else
+    echo "nvm already installed for root."
+    export NVM_DIR="/root/.nvm"                                                      
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                                 
+fi
+
+# Install pnpm for root
+echo "Installing pnpm for root..."                                                   
+curl -fsSL https://get.pnpm.io/install.sh | sh -                                     
+
+# Install nvm and Node.js via nvm for user
+su - "$username" -c '
+if [ ! -d "$HOME/.nvm" ]; then
+    echo "Installing nvm for user..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash   
+    # Add nvm to .zshrc
+    echo "export NVM_DIR=\"\$HOME/.nvm\"" >> \$HOME/.zshrc                           
+    echo "[ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\"" >> \$HOME/.zshrc   
+    export NVM_DIR="\$HOME/.nvm"                                                     
+    [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"                               
+    nvm install --lts                                                                
+else
+    echo "nvm already installed for user."
+    export NVM_DIR="\$HOME/.nvm"                                                     
+    [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"                               
+fi
+
+# Install pnpm for user
+echo "Installing pnpm for user..."                                                   
+curl -fsSL https://get.pnpm.io/install.sh | sh -                                     
+
+# Update npm and install global packages for user
+npm install -g npm@latest
+npm install -g vite create-vite
+'
+
+
+# Update npm and install global packages for root
+npm install -g npm@latest
+npm install -g vite create-vite
 
 # Copy config files for user
 cp .zshrc "$home_dir/.zshrc"
