@@ -66,7 +66,7 @@ create_dir "$home_dir/.local/share/nvim/site/pack/packer/start"
 create_dir "/root/.config"
 create_dir "/root/.local/share/nvim/site/pack/packer/start"
 
-# Install Essential Programs (excluding nodejs and npm)
+# Install Essential Programs
 apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g \
 alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep \
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
@@ -144,66 +144,80 @@ else
     echo "Rust already installed for user."
 fi
 
-# Add additional paths to ensure mason can find npm and go binaries
-if ! grep -q 'export PATH=\$PATH:/usr/local/bin:\$HOME/.local/bin:\$HOME/bin' "$home_dir/.zshrc" 2>/dev/null; then
-    echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' >> "$home_dir/.zshrc"
-fi
-if ! grep -q 'export PATH=\$PATH:/usr/local/bin:\$HOME/.local/bin:\$HOME/bin' /root/.zshrc 2>/dev/null; then
-    echo 'export PATH=$PATH:/usr/local/bin:$HOME/.local/bin:$HOME/bin' >> /root/.zshrc
-fi
 
-
+# ----------------------------------------------------------
+# Install Node.js using NVM and pnpm (Corrected)
+# ----------------------------------------------------------
 
 # Install nvm and Node.js via nvm for root
 if [ ! -d "/root/.nvm" ]; then
     echo "Installing nvm for root..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash   
-    # Add nvm to .zshrc
-    echo 'export NVM_DIR="/root/.nvm"' >> /root/.zshrc                               
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.zshrc          
-    export NVM_DIR="/root/.nvm"                                                      
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                                 
-    nvm install --lts                                                                
-else
-    echo "nvm already installed for root."
-    export NVM_DIR="/root/.nvm"                                                      
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                                 
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+    export NVM_DIR="/root/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 fi
 
-# Install pnpm for root
-echo "Installing pnpm for root..."                                                   
-curl -fsSL https://get.pnpm.io/install.sh | sh -                                     
+# Load nvm for root
+export NVM_DIR="/root/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Install Node.js for root
+nvm install 20.17.0
+nvm use 20.17.0
+nvm alias default 20.17.0
+
+# Install global npm packages for root with proper permissions
+npm config set prefix '/usr/local'
+npm install -g npm@latest
+npm install -g pnpm vite create-vite
 
 # Install nvm and Node.js via nvm for user
 su - "$username" -c '
 if [ ! -d "$HOME/.nvm" ]; then
     echo "Installing nvm for user..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash   
-    # Add nvm to .zshrc
-    echo "export NVM_DIR=\"\$HOME/.nvm\"" >> \$HOME/.zshrc                           
-    echo "[ -s \"\$NVM_DIR/nvm.sh\" ] && \. \"\$NVM_DIR/nvm.sh\"" >> \$HOME/.zshrc   
-    export NVM_DIR="\$HOME/.nvm"                                                     
-    [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"                               
-    nvm install --lts                                                                
-else
-    echo "nvm already installed for user."
-    export NVM_DIR="\$HOME/.nvm"                                                     
-    [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"                               
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 fi
 
-# Install pnpm for user
-echo "Installing pnpm for user..."                                                   
-curl -fsSL https://get.pnpm.io/install.sh | sh -                                     
+# Load nvm for user
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-# Update npm and install global packages for user
+# Install Node.js for user
+nvm install 20.17.0
+nvm use 20.17.0
+nvm alias default 20.17.0
+
+# Configure npm for user-specific global installations
+mkdir -p "$HOME/.npm-global"
+npm config set prefix "$HOME/.npm-global"
+
+# Update PATH for npm global binaries
+export PATH="$HOME/.npm-global/bin:$PATH"
+
+# Install global npm packages for user
 npm install -g npm@latest
-npm install -g vite create-vite
+npm install -g pnpm vite create-vite
 '
 
+# Add npm global bin to PATH in .zshrc (only if not already present)
+if ! grep -q "npm-global/bin" "$home_dir/.zshrc"; then
+    sed -i '/^export PATH=.*$/a export PATH="$HOME/.npm-global/bin:$PATH"' "$home_dir/.zshrc"
+fi
 
-# Update npm and install global packages for root
-npm install -g npm@latest
-npm install -g vite create-vite
+# Add NVM configuration to root's .zshrc (if not exists)
+if [ ! -f "/root/.zshrc" ] || ! grep -q "NVM_DIR" "/root/.zshrc"; then
+    cat >> /root/.zshrc << 'EOF'
+# nvm configuration
+export NVM_DIR="/root/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+EOF
+fi
+
+# ----------------------------------------------------------
+# End of added/modified section
+# ----------------------------------------------------------
 
 # Copy config files for user
 cp .zshrc "$home_dir/.zshrc"
@@ -225,19 +239,8 @@ cp -r nvim /root/.config/nvim
 cp -r i3 /root/.config/i3
 
 # Ensure root owns its home directory files
-#chown root:root /root/.zshrc /root/.tmux.conf
-#chown -R root:root /root/.config/nvim /root/.config/i3
-#chown -R root:root /root/.local/share/nvim
 chown -R root:root /root/
 
-
-# Optionally create an alias for vim to nvim
-if ! grep -q "alias vim='nvim'" "$home_dir/.zshrc" 2>/dev/null; then
-    echo "alias vim='nvim'" >> "$home_dir/.zshrc"
-fi
-if ! grep -q "alias vim='nvim'" /root/.zshrc 2>/dev/null; then
-    echo "alias vim='nvim'" >> /root/.zshrc
-fi
 
 echo "Setup complete!"
 

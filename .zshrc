@@ -7,6 +7,11 @@ plugins=(git colored-man-pages command-not-found)
 
 source $ZSH/oh-my-zsh.sh
 
+# nvm configuration
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+
 # custom prompt
 PROMPT='%F{blue}%n%f %F{green}${PWD##*/}%f $(git_prompt_info)'
 
