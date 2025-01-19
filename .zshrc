@@ -45,3 +45,14 @@ eval "$(ssh-agent -s)"
 if [ -f "$HOME/github/ssh/githubenjoyer1337/github_masterkey" ]; then
     ssh-add "$HOME/github/ssh/githubenjoyer1337/github_masterkey"
 fi
+
+export PNPM_HOME="$HOME/.local/share/pnpm/"
+export PATH="$PNPM_HOME:$PATH"
+
+# pnpm
+export PNPM_HOME="/home/user01/.local/share/pnpm/"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
