@@ -70,7 +70,7 @@ create_dir "/root/.local/share/nvim/site/pack/packer/start"
 apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g \
 alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep \
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
-zsh pkg-config acl git dnsutils lxpolkit mpg123 libssl-dev -y
+zsh pkg-config acl git dnsutils lxpolkit mpg123 thunderbolt-tools bolt libssl-dev -y
 
 
 # Install Oh My Zsh for root if not already installed
@@ -145,9 +145,6 @@ else
 fi
 
 
-# ----------------------------------------------------------
-# Install Node.js using NVM and pnpm (Corrected)
-# ----------------------------------------------------------
 
 # Install nvm and Node.js via nvm for root
 if [ ! -d "/root/.nvm" ]; then
@@ -215,9 +212,6 @@ export NVM_DIR="/root/.nvm"
 EOF
 fi
 
-# ----------------------------------------------------------
-# End of added/modified section
-# ----------------------------------------------------------
 
 # Copy config files for user
 cp .zshrc "$home_dir/.zshrc"
@@ -290,3 +284,17 @@ echo "Setup complete!"
 #
 #
 # for auth prompt handling (lxpolkit)
+#
+#
+# xrandr to arrange monitors:
+# example:
+# xrandr
+# xrandr --output HDMI-1 --auto --output DP-1 --auto --right-of HDMI-1
+# can also use: --left-of --above --below
+#
+# extra drivers for docking station:
+# thunderbolt-tools 
+# bolt
+#
+# using displaylink for proper display with docking station:
+# wget https://www.synaptics.com/sites/default/files/exe_files/2023-08/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.8-EXE.zip
