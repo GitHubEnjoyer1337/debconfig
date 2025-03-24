@@ -234,6 +234,61 @@ cp -r i3 /root/.config/i3
 chown -R root:root /root/
 
 
+# Prevent system from automatically sleeping or suspending
+configure_power_settings() {
+    echo "Configuring power management settings to prevent sleep/suspend..."
+    
+    # Create systemd drop-in directory if it doesn't exist
+    mkdir -p /etc/systemd/sleep.conf.d/
+    
+    # Create a custom configuration file to disable automatic sleep/suspend
+    cat > /etc/systemd/sleep.conf.d/10-disable-auto-sleep.conf << EOF
+[Sleep]
+AllowSuspend=no
+AllowHibernation=no
+AllowSuspendThenHibernate=no
+AllowHybridSleep=no
+EOF
+
+    # Disable sleep target to prevent system from entering sleep state
+    systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+
+    # Configure logind to prevent sleep on lid close and idle timeout
+    mkdir -p /etc/systemd/logind.conf.d/
+    cat > /etc/systemd/logind.conf.d/10-no-sleep.conf << EOF
+[Login]
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+HandleLidSwitchDocked=ignore
+IdleAction=ignore
+EOF
+
+    # Disable DPMS (Display Power Management Signaling)
+    cat > /etc/X11/xorg.conf.d/10-dpms.conf << EOF
+Section "ServerFlags"
+    Option "BlankTime" "0"
+    Option "StandbyTime" "0"
+    Option "SuspendTime" "0"
+    Option "OffTime" "0"
+EndSection
+
+Section "Monitor"
+    Identifier "Monitor0"
+    Option "DPMS" "false"
+EndSection
+EOF
+
+    # Reload systemd configs
+    systemctl daemon-reload
+    
+    echo "Power management settings configured to prevent sleep/suspend."
+}
+
+# Call the function
+configure_power_settings
+
+
+
 echo "Setup complete!"
 
 
