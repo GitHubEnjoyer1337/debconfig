@@ -52,6 +52,9 @@ create_dir() {
 apt update
 apt upgrade -y
 
+# Install Brave Browser
+curl -fsS https://dl.brave.com/install.sh | sh
+
 # Create directories
 create_dir "$home_dir/.config"
 create_dir "$home_dir/screenshots"
