@@ -71,7 +71,7 @@ create_dir "/root/.local/share/nvim/site/pack/packer/start"
 apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g \
 alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep \
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
-zsh pkg-config acl git dnsutils lxpolkit mpg123 thunderbolt-tools bolt libssl-dev -y
+zsh pkg-config acl git dnsutils lxpolkit mpg123 thunderbolt-tools bolt libssl-dev p7zip-full -y
 
 
 # Install Oh My Zsh for root if not already installed
@@ -354,3 +354,6 @@ echo "Setup complete!"
 #
 # using displaylink for proper display with docking station:
 # wget https://www.synaptics.com/sites/default/files/exe_files/2023-08/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.8-EXE.zip
+#
+# for compressing and also encrypting zip files:
+# p7zip-full
