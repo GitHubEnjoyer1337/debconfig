@@ -71,7 +71,7 @@ create_dir "/root/.local/share/nvim/site/pack/packer/start"
 apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g \
 alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep \
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
-zsh pkg-config acl git dnsutils lxpolkit mpg123 thunderbolt-tools bolt libssl-dev p7zip-full -y
+zsh pkg-config acl git dnsutils lxpolkit thunderbolt-tools bolt libssl-dev p7zip-full ffmpeg -y
 
 
 # Install Oh My Zsh for root if not already installed
@@ -309,6 +309,12 @@ echo "Setup complete!"
 # for audio:
 # alsa-utils pulseaudio pavucontrol
 #
+# to record audio:
+# ffmpeg
+# ( pactl list sources and record with 
+#   ffmpeg -f pulse -i alsa_output.usb-SteelSeries_SteelSeries_Arctis_5_00000000-00.analog-chat.monitor output.wav
+# )
+#
 # for quick image viewing:
 # feh
 #
@@ -333,10 +339,6 @@ echo "Setup complete!"
 # for advanced permissions(acl):
 # getfacl: view acls
 # setfacl: set acls
-#
-#
-# for playing mp3:
-# mpg123 <filename>
 #
 #
 # for auth prompt handling (lxpolkit)
