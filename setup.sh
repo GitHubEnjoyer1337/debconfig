@@ -359,3 +359,6 @@ echo "Setup complete!"
 #
 # for compressing and also encrypting zip files:
 # p7zip-full
+#
+# change lang temporarly on x server:
+# setxkbmap de/us
