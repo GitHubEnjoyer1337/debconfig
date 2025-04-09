@@ -25,7 +25,7 @@ get_username
 home_dir="/home/$username"
 
 # Check for required_files
-required_files=(".zshrc" ".tmux.conf" "nvim" "i3" "alacritty.yml" "keepassxc")
+required_files=(".zshrc" ".tmux.conf" "nvim" "i3" "alacritty.yml")
 for file in "${required_files[@]}"; do
     if [ ! -e "$file" ]; then
         echo "Error: Required file $file not found"
@@ -72,7 +72,7 @@ apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatpr
 alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep \
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
 zsh pkg-config acl git dnsutils lxpolkit thunderbolt-tools bolt libssl-dev p7zip-full \
-ffmpeg chrony -y
+ffmpeg chrony keepassxc -y
 
 
 # Install Oh My Zsh for root if not already installed
