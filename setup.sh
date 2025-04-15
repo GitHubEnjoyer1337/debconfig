@@ -223,6 +223,22 @@ cp -r i3 "$home_dir/.config/i3"
 cp alacritty.yml "$home_dir/.config/alacritty/alacritty.yml"
 cp keepassxc /opt/appimages/keepassxc
 
+
+# Add Polkit agent to i3 config for user
+i3_config_user="$home_dir/.config/i3/config"
+if [ -f "$i3_config_user" ]; then
+    if ! grep -q "lxpolkit" "$i3_config_user"; then
+        echo "Adding lxpolkit to user's i3 config..."
+        echo "exec --no-startup-id lxpolkit" >> "$i3_config_user"
+    else
+        echo "lxpolkit already configured in user's i3 config."
+    fi
+else
+    echo "Error: i3 config file for user not found at $i3_config_user"
+    exit 1
+fi
+
+
 # Set correct ownership for the copied files
 chown "$username:$username" "$home_dir/.zshrc" "$home_dir/.tmux.conf"
 chown -R "$username:$username" "$home_dir/.config/nvim" "$home_dir/.config/i3" "$home_dir/.config/alacritty"
@@ -233,6 +249,22 @@ cp .zshrc /root/.zshrc
 cp .tmux.conf /root/.tmux.conf
 cp -r nvim /root/.config/nvim
 cp -r i3 /root/.config/i3
+
+
+# Add Polkit agent to i3 config for root
+i3_config_root="/root/.config/i3/config"
+if [ -f "$i3_config_root" ]; then
+    if ! grep -q "lxpolkit" "$i3_config_root"; then
+        echo "Adding lxpolkit to root's i3 config..."
+        echo "exec --no-startup-id lxpolkit" >> "$i3_config_root"
+    else
+        echo "lxpolkit already configured in root's i3 config."
+    fi
+else
+    echo "Error: i3 config file for root not found at $i3_config_root"
+    exit 1
+fi
+
 
 # Ensure root owns its home directory files
 chown -R root:root /root/
