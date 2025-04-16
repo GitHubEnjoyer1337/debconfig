@@ -18,16 +18,16 @@ PROMPT='%F{blue}%n%f %F{green}${PWD##*/}%f $(git_prompt_info)'
 
 # Aliases
 alias l="ls -lah --color=auto"
-alias brave="nohup brave-browser & disown"
+alias brave="nohup brave "$@" &>/dev/null & disown"
 alias shutdown="sudo shutdown -h now"
-alias chrome="nohup chromium & disown"
+alias chrome="nohup chromium "$@" &>/dev/null & disown"
 alias writer="libreoffice --writer"
 alias calc="libreoffice --calc"
 alias impress="libreoffice --impress"
 alias draw="libreoffice --draw"
 alias base="libreoffice --base"
-alias pass="nohup keepassxc & disown"
-
+alias pass="nohup keepassxc "$@" &>/dev/null & disown"
+alias gimp='nohup gimp "$@" &>/dev/null & disown'
 
 # Source cargo (Rust environment)
 if [ -f "$HOME/.cargo/env" ]; then
@@ -56,3 +56,11 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+zathura() {
+    nohup /usr/bin/zathura "$@" &>/dev/null & disown
+}
+
+feh() {
+    nohup /usr/bin/feh "$@" &>/dev/null & disown
+}
