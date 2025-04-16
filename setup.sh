@@ -72,7 +72,7 @@ apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatpr
 alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep \
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
 zsh pkg-config acl git dnsutils lxpolkit thunderbolt-tools bolt libssl-dev p7zip-full \
-ffmpeg chrony keepassxc -y
+ffmpeg chrony keepassxc htop -y
 
 
 # Install Oh My Zsh for root if not already installed
