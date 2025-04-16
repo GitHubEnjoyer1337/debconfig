@@ -113,7 +113,7 @@ chsh -s "$(which zsh)" root
 
 # Installing the most recent Neovim version
 if [ ! -f /usr/local/bin/nvim ]; then
-    wget https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -O /usr/local/bin/nvim
+    wget https://github.com/neovim/neovim/releases/10.9.0/download/nvim.appimage -O /usr/local/bin/nvim
     chmod +x /usr/local/bin/nvim
 else
     echo "Neovim already installed."
@@ -151,7 +151,7 @@ fi
 # Install nvm and Node.js via nvm for root
 if [ ! -d "/root/.nvm" ]; then
     echo "Installing nvm for root..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
     export NVM_DIR="/root/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 fi
@@ -161,20 +161,25 @@ export NVM_DIR="/root/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 # Install Node.js for root
-nvm install 20.17.0
-nvm use 20.17.0
-nvm alias default 20.17.0
+nvm install 23.11.0
+nvm use 23.11.0
+nvm alias default 23.11.0
+
+# Remove any existing .npmrc file to avoid conflicts with nvm
+if [ -f "/root/.npmrc" ]; then
+    rm "/root/.npmrc"
+    echo "Removed existing .npmrc for root to ensure compatibility with nvm."
+fi
 
 # Install global npm packages for root with proper permissions
-npm config set prefix '/usr/local'
-npm install -g npm@latest
+npm install -g npm@10.9.0
 npm install -g pnpm vite create-vite
 
 # Install nvm and Node.js via nvm for user
 su - "$username" -c '
 if [ ! -d "$HOME/.nvm" ]; then
     echo "Installing nvm for user..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 fi
@@ -184,25 +189,28 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 # Install Node.js for user
-nvm install 20.17.0
-nvm use 20.17.0
-nvm alias default 20.17.0
+nvm install 23.11.0
+nvm use 23.11.0
+nvm alias default 23.11.0
 
-# Configure npm for user-specific global installations
-mkdir -p "$HOME/.npm-global"
-npm config set prefix "$HOME/.npm-global"
+# Remove any existing .npmrc file to avoid conflicts with nvm
+if [ -f "$HOME/.npmrc" ]; then
+    rm "$HOME/.npmrc"
+    echo "Removed existing .npmrc to ensure compatibility with nvm."
+fi
 
-# Update PATH for npm global binaries
-export PATH="$HOME/.npm-global/bin:$PATH"
-
-# Install global npm packages for user
-npm install -g npm@latest
+# Install global npm packages for user using nvm default prefix
+npm install -g npm@10.9.0
 npm install -g pnpm vite create-vite
 '
 
-# Add npm global bin to PATH in .zshrc (only if not already present)
-if ! grep -q "npm-global/bin" "$home_dir/.zshrc"; then
-    sed -i '/^export PATH=.*$/a export PATH="$HOME/.npm-global/bin:$PATH"' "$home_dir/.zshrc"
+# Add NVM configuration to root's .zshrc (if not exists)
+if [ ! -f "/root/.zshrc" ] || ! grep -q "NVM_DIR" "/root/.zshrc"; then
+    cat >> /root/.zshrc << 'EOF'
+# nvm configuration
+export NVM_DIR="/root/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+EOF
 fi
 
 # Add NVM configuration to root's .zshrc (if not exists)
