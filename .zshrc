@@ -18,7 +18,7 @@ PROMPT='%F{blue}%n%f %F{green}${PWD##*/}%f $(git_prompt_info)'
 
 # Aliases
 alias l="ls -lah --color=auto"
-alias brave="nohup brave "$@" &>/dev/null & disown"
+alias brave="nohup brave-browser "$@" &>/dev/null & disown"
 alias shutdown="sudo shutdown -h now"
 alias chrome="nohup chromium "$@" &>/dev/null & disown"
 alias writer="libreoffice --writer"
