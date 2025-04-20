@@ -113,7 +113,7 @@ chsh -s "$(which zsh)" root
 
 # Installing the most recent Neovim version
 if [ ! -f /usr/local/bin/nvim ]; then
-    wget https://github.com/neovim/neovim/releases/10.9.0/download/nvim.appimage -O /usr/local/bin/nvim
+    wget https://github.com/neovim/neovim/releases/11.3.0/download/nvim.appimage -O /usr/local/bin/nvim
     chmod +x /usr/local/bin/nvim
 else
     echo "Neovim already installed."
@@ -172,7 +172,7 @@ if [ -f "/root/.npmrc" ]; then
 fi
 
 # Install global npm packages for root with proper permissions
-npm install -g npm@10.9.0
+npm install -g npm@11.3.0
 npm install -g pnpm vite create-vite
 
 # Install nvm and Node.js via nvm for user
@@ -200,7 +200,7 @@ if [ -f "$HOME/.npmrc" ]; then
 fi
 
 # Install global npm packages for user using nvm default prefix
-npm install -g npm@10.9.0
+npm install -g npm@11.3.0
 npm install -g pnpm vite create-vite
 '
 
