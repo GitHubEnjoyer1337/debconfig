@@ -226,6 +226,7 @@ fi
 # Copy config files for user
 cp .zshrc "$home_dir/.zshrc"
 cp .tmux.conf "$home_dir/.tmux.conf"
+rm -rf "$home_dir/.config/nvim"
 cp -r nvim "$home_dir/.config/nvim"
 cp -r i3 "$home_dir/.config/i3"
 cp alacritty.yml "$home_dir/.config/alacritty/alacritty.yml"
