@@ -26,7 +26,7 @@ alias calc="libreoffice --calc"
 alias impress="libreoffice --impress"
 alias draw="libreoffice --draw"
 alias base="libreoffice --base"
-alias pass="nohup keepassxc "$@" &>/dev/null & disown"
+alias keepass="nohup keepassxc "$@" &>/dev/null & disown"
 alias gimp='nohup gimp "$@" &>/dev/null & disown'
 
 # Source cargo (Rust environment)
