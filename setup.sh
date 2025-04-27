@@ -72,7 +72,7 @@ apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatpr
 alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip ripgrep \
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
 zsh pkg-config acl git dnsutils lxpolkit thunderbolt-tools bolt libssl-dev p7zip-full \
-ffmpeg chrony keepassxc htop plocate lm-sensors lsof pass python3-pip -y
+ffmpeg chrony keepassxc btop plocate lm-sensors lsof pass python3-pip neofetch -y
 
 
 # Install Oh My Zsh for root if not already installed
@@ -113,7 +113,7 @@ chsh -s "$(which zsh)" root
 
 # Installing the most recent Neovim version
 if [ ! -f /usr/local/bin/nvim ]; then
-    wget https://github.com/neovim/neovim/releases/11.3.0/download/nvim.appimage -O /usr/local/bin/nvim
+    wget https://github.com/neovim/neovim/releases/download/v0.11.0/nvim-linux-x86_64.appimage -O /usr/local/bin/nvim
     chmod +x /usr/local/bin/nvim
 else
     echo "Neovim already installed."
