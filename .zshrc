@@ -64,3 +64,6 @@ zathura() {
 feh() {
     nohup /usr/bin/feh "$@" &>/dev/null & disown
 }
+# exports for ranger file open functionality
+export EDITOR=vim
+export VISUAL=vim

@@ -25,7 +25,7 @@ get_username
 home_dir="/home/$username"
 
 # Check for required_files
-required_files=(".zshrc" ".tmux.conf" "nvim" "config" "alacritty.yml")
+required_files=(".zshrc" ".tmux.conf" "nvim" "config" "alacritty.yml" "rifle.conf")
 for file in "${required_files[@]}"; do
     if [ ! -e "$file" ]; then
         echo "Error: Required file $file not found"
@@ -230,7 +230,7 @@ rm -rf "$home_dir/.config/nvim"
 cp -r nvim "$home_dir/.config/nvim"
 cp config "$home_dir/.config/i3"
 cp alacritty.yml "$home_dir/.config/alacritty/alacritty.yml"
-cp keepassxc /opt/appimages/keepassxc
+cp rifle.conf "$home_dir/.config/ranger" 
 
 
 # Add Polkit agent to i3 config for user
@@ -250,14 +250,14 @@ fi
 
 # Set correct ownership for the copied files
 chown "$username:$username" "$home_dir/.zshrc" "$home_dir/.tmux.conf"
-chown -R "$username:$username" "$home_dir/.config/nvim" "$home_dir/.config/i3" "$home_dir/.config/alacritty"
+chown -R "$username:$username" "$home_dir/.config/nvim" "$home_dir/.config/i3" "$home_dir/.config/alacritty" "$home_dir/.config/ranger"
 chown -R "$username:$username" "$home_dir/.local/share/nvim"
 
 # Copy config files for root
 cp .zshrc /root/.zshrc
 cp .tmux.conf /root/.tmux.conf
 cp -r nvim /root/.config/nvim
-cp -r i3 /root/.config/i3
+cp config /root/.config/i3/config
 
 
 # Add Polkit agent to i3 config for root
