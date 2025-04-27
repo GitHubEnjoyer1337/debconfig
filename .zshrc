@@ -64,5 +64,3 @@ zathura() {
 feh() {
     nohup /usr/bin/feh "$@" &>/dev/null & disown
 }
-
-neofetch
