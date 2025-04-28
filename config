@@ -213,3 +213,6 @@ bindsym $mod+Shift+s exec --no-startup-id bash -c 'maim -s | tee ~/screenshots/$
 bindsym $mod+Shift+v exec --no-startup-id bash -c 'feh $(ls -t ~/screenshots/*.png | head -n 1)'
 
 
+exec --no-startup-id lxpolkit
+
+bindsym $mod+b exec --no-startup-id brave-browser 
