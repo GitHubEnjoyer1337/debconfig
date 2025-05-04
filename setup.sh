@@ -229,7 +229,7 @@ cp .zshrc "$home_dir/.zshrc"
 cp .tmux.conf "$home_dir/.tmux.conf"
 rm -rf "$home_dir/.config/nvim"
 cp -r nvim "$home_dir/.config/nvim"
-cp config "$home_dir/.config/i3"
+cp config "$home_dir/.config/i3/config"
 cp alacritty.yml "$home_dir/.config/alacritty/alacritty.yml"
 cp rifle.conf "$home_dir/.config/ranger" 
 
