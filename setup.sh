@@ -48,6 +48,50 @@ create_dir() {
     fi
 }
 
+
+
+# Define variables for adding deb testing source ( with low prio)
+SOURCES_FILE="/etc/apt/sources.list"
+PREF_FILE="/etc/apt/preferences.d/testing.pref"
+TESTING_LINE="deb http://deb.debian.org/debian testing main"
+
+
+# Check if testing repository is already in sources.list
+if grep -Fx "$TESTING_LINE" "$SOURCES_FILE" > /dev/null; then
+  echo "Debian Testing repository already exists in $SOURCES_FILE."
+else
+  echo "Adding Debian Testing repository to $SOURCES_FILE..."
+  echo "$TESTING_LINE" >> "$SOURCES_FILE"
+fi
+
+# Create preferences file for low priority
+echo "Creating $PREF_FILE to set low priority for testing repository..."
+cat > "$PREF_FILE" << EOL
+Package: *
+Pin: release a=testing
+Pin-Priority: 400
+EOL
+
+# Verify the changes of adding testing source to apt
+echo "Verifying changes..."
+if grep -Fx "$TESTING_LINE" "$SOURCES_FILE" > /dev/null; then
+  echo "Debian Testing repository successfully added to $SOURCES_FILE."
+else
+  echo "Error: Failed to add Debian Testing repository."
+  exit 1
+fi
+
+if [ -f "$PREF_FILE" ] && grep -q "Pin-Priority: 400" "$PREF_FILE"; then
+  echo "Testing repository priority set successfully in $PREF_FILE."
+else
+  echo "Error: Failed to set testing repository priority."
+  exit 1
+fi
+
+
+
+
+
 # Update packages list and upgrade system
 apt update
 apt upgrade -y
