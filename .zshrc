@@ -28,6 +28,7 @@ alias draw="libreoffice --draw"
 alias base="libreoffice --base"
 alias keepass="nohup keepassxc "$@" &>/dev/null & disown"
 alias gimp='nohup gimp "$@" &>/dev/null & disown'
+alias discord="nohup discord "$@" &>/dev/null & disown"
 
 # Source cargo (Rust environment)
 if [ -f "$HOME/.cargo/env" ]; then
