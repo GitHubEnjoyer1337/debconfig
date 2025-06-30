@@ -110,6 +110,7 @@ create_dir "$home_dir/.local/share/nvim/site/pack/packer/start"
 # For Root User
 create_dir "/root/.config"
 create_dir "/root/.local/share/nvim/site/pack/packer/start"
+create_dir "/root/.config/i3"
 
 # Install Essential Programs
 apt install sudo xorg wget curl tmux build-essential dos2unix exfat-fuse exfatprogs ntfs-3g \
@@ -162,6 +163,18 @@ if [ ! -f /usr/local/bin/nvim ]; then
     chmod +x /usr/local/bin/nvim
 else
     echo "Neovim already installed."
+fi
+
+# Replace vim symlink with nvim
+if [ -L /usr/bin/vim ]; then
+    echo "Removing existing vim symlink..."
+    rm /usr/bin/vim
+fi
+if [ ! -L /usr/bin/vim ]; then
+    echo "Creating vim symlink to nvim..."
+    ln -s /usr/local/bin/nvim /usr/bin/vim
+else
+    echo "vim symlink already points to nvim."
 fi
 
 # Install Packer.nvim for Neovim (User installation)
