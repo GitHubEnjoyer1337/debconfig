@@ -1,4 +1,0 @@
-Opening in existing browser session.
-qt.qpa.clipboard: QXcbClipboard::setMimeData: Cannot set X11 selection owner
-qt.qpa.clipboard: QXcbClipboard::setMimeData: Cannot set X11 selection owner
-The X11 connection broke (error 1). Did the X11 server die?
