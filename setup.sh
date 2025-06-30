@@ -117,7 +117,7 @@ alsa-utils pulseaudio pavucontrol net-tools nmap feh gdisk gimp maim slop xclip 
 zathura vim vim-gtk3 sddm i3 golang exiftool lshw rsync libreoffice redshift e2fsprogs \
 zsh pkg-config acl git dnsutils lxpolkit thunderbolt-tools bolt libssl-dev p7zip-full \
 ffmpeg chrony keepassxc btop plocate lm-sensors lsof pass python3-pip pipx neofetch ranger \
-docker podman netcat-openbsd -y
+docker podman netcat-openbsd alacritty -y
 
 
 # Install Oh My Zsh for root if not already installed
@@ -294,9 +294,8 @@ fi
 
 
 # Set correct ownership for the copied files
-chown "$username:$username" "$home_dir/.zshrc" "$home_dir/.tmux.conf"
-chown -R "$username:$username" "$home_dir/.config/nvim" "$home_dir/.config/i3" "$home_dir/.config/alacritty" "$home_dir/.config/ranger"
-chown -R "$username:$username" "$home_dir/.local/share/nvim"
+chown -R "$username:$username" "$home_dir"
+
 
 # Copy config files for root
 cp .zshrc /root/.zshrc
