@@ -42,7 +42,7 @@ local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = {'vtsls', 'rust_analyzer', 'pyright', 'gopls', 'html', 'lua_ls' },
+  ensure_installed = {'vtsls', 'rust_analyzer', 'pyright', 'html', 'lua_ls' },
   handlers = {
     function(server_name)
       require('lspconfig')[server_name].setup({
