@@ -42,10 +42,24 @@ SAVEHIST=20000
 HISTFILE=~/.zsh_history
 
 # SSH agent configuration
-eval "$(ssh-agent -s)"
-if [ -f "$HOME/github/ssh/githubenjoyer1337/github_masterkey" ]; then
-    ssh-add "$HOME/github/ssh/githubenjoyer1337/github_masterkey"
+# Check if ssh-agent is already running
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    # Start ssh-agent and capture its output
+    eval "$(ssh-agent -s)" > /dev/null 2>&1
 fi
+
+# Add SSH keys from the mex_ssh_keys directory
+if [ -d "$HOME/personal/mex_ssh_keys" ]; then
+    for key in "$HOME/personal/mex_ssh_keys"/*; do
+        # Check if the file is a regular file and not a public key
+        if [ -f "$key" ] && [[ "$key" != *.pub ]]; then
+            ssh-add "$key" 2>/dev/null || true
+        fi
+    done
+fi
+
+
+
 
 export PNPM_HOME="$HOME/.local/share/pnpm/"
 export PATH="$PNPM_HOME:$PATH"
