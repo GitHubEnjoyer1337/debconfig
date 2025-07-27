@@ -1,4 +1,3 @@
-vim.g.mapleader = " "
 
 --now used to open oil formerly used for ex (netrw)
 -- vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
@@ -46,7 +45,7 @@ vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
 vim.keymap.set("n", "Q", "<nop>")
 
 -- Format code using LSP in normal mode
-vim.keymap.set("n", "<leader>m", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>m", function() require("conform").format({ async = true, lsp_fallback = true }) end)
 
 -- Move to the next item in the quickfix list and center the cursor in normal mode
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")

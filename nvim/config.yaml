@@ -1,0 +1,8 @@
+exclude_dirs:
+  - plugin
+exclude_files:
+  - bundle.txt
+  - plugin/packer_compiled.lua
+  - config.yaml
+exclude_patterns:
+  - ".tmpal"

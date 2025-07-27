@@ -1,6 +1,6 @@
 -- Treesitter configuration
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "rust", "svelte", "bash" },  -- list of languages you want treesitter to support
+  ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "rust", "svelte", "bash" },  -- list of languages you want treesitter to support
   sync_install = false,
   auto_install = true,
   highlight = {
