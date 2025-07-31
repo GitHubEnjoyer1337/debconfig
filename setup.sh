@@ -105,11 +105,9 @@ create_dir "$home_dir/screenshots"
 create_dir "$home_dir/github/ssh/githubenjoyer1337"
 create_dir "$home_dir/.config/alacritty"
 create_dir "/opt/appimages"
-create_dir "$home_dir/.local/share/nvim/site/pack/packer/start"
 
 # For Root User
 create_dir "/root/.config"
-create_dir "/root/.local/share/nvim/site/pack/packer/start"
 create_dir "/root/.config/i3"
 
 # Install Essential Programs
@@ -179,24 +177,24 @@ else
     echo "vim symlink already points to nvim."
 fi
 
-# Install Packer.nvim for Neovim (User installation)
-packer_dir="$home_dir/.local/share/nvim/site/pack/packer/start/packer.nvim"
-if [ -d "$packer_dir/.git" ]; then
-    echo "Updating Packer.nvim for user..."
-    su - "$username" -c "git -C \"$packer_dir\" pull"
+# Install Lazy.nvim for Neovim (User installation)
+lazy_dir="$home_dir/.local/share/nvim/lazy/lazy.nvim"
+if [ -d "$lazy_dir/.git" ]; then
+    echo "Updating Lazy.nvim for user..."
+    su - "$username" -c "git -C \"$lazy_dir\" pull"
 else
-    echo "Installing Packer.nvim for user..."
-    su - "$username" -c "git clone --depth 1 https://github.com/wbthomason/packer.nvim '$packer_dir'"
+    echo "Installing Lazy.nvim for user..."
+    su - "$username" -c "git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable '$lazy_dir'"
 fi
 
-# Install Packer.nvim for root user
-packer_dir_root="/root/.local/share/nvim/site/pack/packer/start/packer.nvim"
-if [ -d "$packer_dir_root/.git" ]; then
-    echo "Updating Packer.nvim for root..."
-    git -C "$packer_dir_root" pull
+# Install Lazy.nvim for root user
+lazy_dir_root="/root/.local/share/nvim/lazy/lazy.nvim"
+if [ -d "$lazy_dir_root/.git" ]; then
+    echo "Updating Lazy.nvim for root..."
+    git -C "$lazy_dir_root" pull
 else
-    echo "Installing Packer.nvim for root..."
-    git clone --depth 1 https://github.com/wbthomason/packer.nvim "$packer_dir_root"
+    echo "Installing Lazy.nvim for root..."
+    git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable "$lazy_dir_root"
 fi
 
 # Install Rust (for user)
