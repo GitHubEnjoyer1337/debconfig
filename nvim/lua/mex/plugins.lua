@@ -34,5 +34,6 @@ return {
   'jay-babu/mason-nvim-dap.nvim',
   'stevearc/conform.nvim',
   'mfussenegger/nvim-lint',
-  'WhoIsSethDaniel/mason-tool-installer.nvim'
+  'WhoIsSethDaniel/mason-tool-installer.nvim',
+  'folke/neodev.nvim',
 }

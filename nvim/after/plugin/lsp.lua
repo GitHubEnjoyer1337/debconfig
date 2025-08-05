@@ -40,33 +40,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 local lsp_capabilities = require('blink.cmp').get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
 
+require('neodev').setup({})
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = {'vtsls', 'rust_analyzer', 'pyright', 'html', 'lua_ls', 'clangd' },
+  ensure_installed = {'vtsls', 'rust_analyzer', 'pyright', 'html', 'lua_ls', 'clangd', 'asm_lsp' },
   handlers = {
     function(server_name)
       require('lspconfig')[server_name].setup({
         capabilities = lsp_capabilities,
-      })
-    end,
-    lua_ls = function()
-      require('lspconfig').lua_ls.setup({
-        capabilities = lsp_capabilities,
-        settings = {
-          Lua = {
-            runtime = {
-              version = 'LuaJIT'
-            },
-            diagnostics = {
-              globals = {'vim'},
-            },
-            workspace = {
-              library = {
-                vim.env.VIMRUNTIME,
-              }
-            }
-          }
-        }
       })
     end,
     clangd = function()
