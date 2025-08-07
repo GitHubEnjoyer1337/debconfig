@@ -118,7 +118,7 @@ exiftool lshw rsync libreoffice redshift e2fsprogs zsh pkg-config acl \
 git dnsutils lxpolkit thunderbolt-tools bolt libssl-dev p7zip-full \
 ffmpeg chrony keepassxc btop plocate lm-sensors lsof pass python3-pip \
 pipx neofetch ranger docker podman netcat-openbsd alacritty whois \
-clang llvm clangd clang-format clang-tidy gdb cmake make -y
+clang llvm clangd clang-format clang-tidy gdb cmake make nasm -y
 
 
 # Install Oh My Zsh for root if not already installed
