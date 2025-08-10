@@ -71,40 +71,14 @@ vim.keymap.set("n", "p", "p")
 -- Print (paste) from system clipboard in normal mode
 vim.keymap.set("n", "<leader>P", [["+p"]])
 
--- for reference: remaps from the lsp.lua file
---
---  -- Go to definition: Navigates to the definition of the symbol under the cursor
---  vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition() end, opts)
---
---  -- Hover: Displays hover information about the symbol under the cursor
---  vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, opts)
---
---  -- Workspace symbol: Searches for a symbol in the workspace and displays the results
---  vim.keymap.set('n', '<leader>vws', function() vim.lsp.buf.workspace_symbol() end, opts)
---
---  -- Diagnostic float: Opens a floating window with diagnostic information at the current cursor position
---  vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.open_float() end, opts)
---
---  -- Next diagnostic: Jumps to the next diagnostic in the buffer
---  vim.keymap.set('n', '[d', function() vim.diagnostic.goto_next() end, opts)
---
---  -- Previous diagnostic: Jumps to the previous diagnostic in the buffer
---  vim.keymap.set('n', ']d', function() vim.diagnostic.goto_prev() end, opts)
---
---  -- Code action: Displays a list of code actions available at the current cursor position
---  vim.keymap.set('n', '<leader>vca', function() vim.lsp.buf.code_action() end, opts)
---
---  -- References: Lists all references to the symbol under the cursor
---  vim.keymap.set('n', '<leader>vrr', function() vim.lsp.buf.references() end, opts)
---
---  -- Rename: Renames all references to the symbol under the cursor
---  vim.keymap.set('n', '<leader>vrn', function() vim.lsp.buf.rename() end, opts)
---
---  -- Signature help: Displays signature information about the function or method at the current cursor position
---  vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
---
---    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
---    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
---    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
---    ['<C-Space>'] = cmp.mapping.complete(),
---
+
+
+-- DAP keybindings
+vim.keymap.set('n', '<leader>b', ':DapToggleBreakpoint<CR>') -- Toggle breakpoint
+vim.keymap.set('n', '<leader>dc', ':DapContinue<CR>') -- Continue debugging
+vim.keymap.set('n', '<leader>dn', ':DapStepOver<CR>') -- Step over
+vim.keymap.set('n', '<leader>di', ':DapStepInto<CR>') -- Step into
+vim.keymap.set('n', '<leader>do', ':DapStepOut<CR>') -- Step out
+
+
+
